@@ -1,18 +1,15 @@
 package ru.job4j;
 
 public class DCLSingleton {
-    private static volatile DCLSingleton inst;
 
     private DCLSingleton() {
     }
+
+    private static final class DCLHolder {
+        private static final DCLSingleton INST = new DCLSingleton();
+    }
+
     public static DCLSingleton instOf() {
-        if (inst == null) {
-            synchronized (DCLSingleton.class) {
-                if (inst == null) {
-                    inst = new DCLSingleton();
-                }
-            }
-        }
-        return inst;
+        return DCLHolder.INST;
     }
 }
