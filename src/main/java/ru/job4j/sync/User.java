@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class User {
     private static AtomicInteger idCounter = new AtomicInteger();
     private final int id;
-    private volatile int amount;
+    private int amount;
 
     public User() {
         this.id = idCounter.incrementAndGet();

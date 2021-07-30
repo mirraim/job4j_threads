@@ -1,54 +1,40 @@
 package ru.job4j.sync;
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
+@ThreadSafe
 public class ListStore implements Store {
-    private final List<User> userList;
+    @GuardedBy("this")
+    private final Map<Integer, User> userList;
 
     public ListStore() {
-        userList = new ArrayList<>();
+        userList = new HashMap<>();
     }
 
     @Override
-    public boolean add(User user) {
-        return userList.add(user);
+    public synchronized boolean add(User user) {
+        return userList.put(user.getId(), user) == null;
     }
 
     @Override
-    public boolean update(User user) {
-        int index = findIndex(user);
-        if (index == -1) {
+    public synchronized boolean update(User user) {
+        if (!userList.containsKey(user.getId())) {
             return false;
         }
-        userList.remove(index);
-        userList.add(index, user);
+        userList.put(user.getId(), user);
         return true;
     }
 
     @Override
-    public boolean delete(User user) {
-        int index = findIndex(user);
-        if (index == -1) {
-            return false;
-        }
-        userList.remove(index);
-        return true;
+    public synchronized boolean delete(User user) {
+        return userList.remove(user.getId()) != null;
     }
 
     @Override
-    public User findById(int id) {
-        return userList.stream().filter(user -> user.getId() == id).findFirst().orElse(null);
-    }
-
-    private int findIndex(User user) {
-        int index = -1;
-        for (int i = 0; i < userList.size(); i++) {
-            if (userList.get(i).getId() == user.getId()) {
-                index = i;
-                break;
-            }
-        }
-        return index;
+    public synchronized User findById(int id) {
+        return userList.get(id);
     }
 }
