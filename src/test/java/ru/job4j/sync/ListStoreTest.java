@@ -9,7 +9,7 @@ public class ListStoreTest {
     public void add() {
         Store store = new ListStore();
         UserStorage storage = new UserStorage(store);
-        User user = new User();
+        User user = new User(1);
         assertTrue(storage.add(user));
     }
 
@@ -17,57 +17,53 @@ public class ListStoreTest {
     public void update() {
         Store store = new ListStore();
         UserStorage storage = new UserStorage(store);
-        User user = new User();
-        int id = user.getId();
+        User user = new User(1);
         storage.add(user);
-        User otherUser = new User(id);
+        User otherUser = new User(1);
         storage.update(otherUser);
-        assertEquals(store.findById(id), otherUser);
+        assertEquals(store.findById(1), otherUser);
     }
 
     @Test
     public void updateWhenNoUser() {
         Store store = new ListStore();
-        User user = new User();
+        User user = new User(1);
         store.add(user);
-        User otherUser = new User(-1);
+        User otherUser = new User(2);
         assertFalse(store.update(otherUser));
     }
 
     @Test
     public void delete() {
         Store store = new ListStore();
-        User user = new User();
-        int id = user.getId();
+        User user = new User(1);
         store.add(user);
-        User otherUser = new User(id);
-        store.delete(otherUser);
-        assertNull(store.findById(id));
+        store.delete(user);
+        assertNull(store.findById(1));
     }
 
     @Test
     public void deleteWhenNoUser() {
         Store store = new ListStore();
-        User user = new User();
+        User user = new User(1);
         store.add(user);
-        User otherUser = new User(-1);
+        User otherUser = new User(2);
         assertFalse(store.delete(otherUser));
     }
 
     @Test
     public void whenFind() {
         Store store = new ListStore();
-        User user = new User();
+        User user = new User(1);
         store.add(user);
-        int id = user.getId();
-        assertEquals(store.findById(id), user);
+        assertEquals(store.findById(1), user);
     }
 
     @Test
     public void whenNoFind() {
         Store store = new ListStore();
-        User user = new User();
+        User user = new User(1);
         store.add(user);
-        assertNull(store.findById(0));
+        assertNull(store.findById(2));
     }
 }

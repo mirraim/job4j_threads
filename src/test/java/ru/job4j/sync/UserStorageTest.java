@@ -9,66 +9,57 @@ public class UserStorageTest {
     public void transferWhenNoMoney() {
         Store store = new ListStore();
         UserStorage storage = new UserStorage(store);
-        User user = new User();
-        int fromId = user.getId();
+        User user = new User(1);
         storage.add(user);
-        User otherUser = new User();
-        int toId = otherUser.getId();
+        User otherUser = new User(2);
         storage.add(otherUser);
-        assertFalse(storage.transfer(fromId, toId, 20));
+        assertFalse(storage.transfer(1, 2, 20));
     }
 
     @Test
     public void transferWhenNoUser() {
         Store store = new ListStore();
         UserStorage storage = new UserStorage(store);
-        User user = new User();
-        int fromId = user.getId();
+        User user = new User(1);
         storage.add(user);
         user.setAmount(200);
-        assertFalse(storage.transfer(fromId, 0, 20));
+        assertFalse(storage.transfer(1, 2, 20));
     }
 
     @Test
     public void transfer() {
         Store store = new ListStore();
         UserStorage storage = new UserStorage(store);
-        User user = new User();
-        int fromId = user.getId();
+        User user = new User(1);
         user.setAmount(200);
         storage.add(user);
-        User otherUser = new User();
-        int toId = otherUser.getId();
+        User otherUser = new User(2);
         storage.add(otherUser);
-        assertTrue(storage.transfer(fromId, toId, 20));
+        assertTrue(storage.transfer(1, 2, 20));
     }
 
     @Test
     public void sourceWhen20() {
         Store store = new ListStore();
         UserStorage storage = new UserStorage(store);
-        User user = new User();
-        int fromId = user.getId();
+        User user = new User(1);
         user.setAmount(200);
         storage.add(user);
-        User otherUser = new User();
-        int toId = otherUser.getId();
+        User otherUser = new User(2);
         storage.add(otherUser);
-        storage.transfer(fromId, toId, 20);
+        storage.transfer(1, 2, 20);
         assertEquals(user.getAmount(), 180);
     }
     @Test
     public void targetWhen20() {
         Store store = new ListStore();
         UserStorage storage = new UserStorage(store);
-        User user = new User();
-        int fromId = user.getId();
+        User user = new User(1);
         user.setAmount(200);
         storage.add(user);
-        User otherUser = new User();
-        int toId = otherUser.getId();
+        User otherUser = new User(2);
         storage.add(otherUser);
-        storage.transfer(fromId, toId, 20);
+        storage.transfer(1, 2, 20);
         assertEquals(otherUser.getAmount(), 20);
     }
 
@@ -76,15 +67,13 @@ public class UserStorageTest {
     public void targetWhenThreads() throws InterruptedException {
         Store store = new ListStore();
         UserStorage storage = new UserStorage(store);
-        User user = new User();
-        int fromId = user.getId();
+        User user = new User(1);
         user.setAmount(200);
         storage.add(user);
-        User otherUser = new User();
-        int toId = otherUser.getId();
+        User otherUser = new User(2);
         storage.add(otherUser);
-        Thread thread = new Thread(() -> storage.transfer(fromId, toId, 20));
-        Thread another = new Thread(() -> storage.transfer(fromId, toId, 20));
+        Thread thread = new Thread(() -> storage.transfer(1, 2, 20));
+        Thread another = new Thread(() -> storage.transfer(1, 2, 20));
         thread.start();
         another.start();
         thread.join();
@@ -96,15 +85,13 @@ public class UserStorageTest {
     public void sourceWhenThreads() throws InterruptedException {
         Store store = new ListStore();
         UserStorage storage = new UserStorage(store);
-        User user = new User();
-        int fromId = user.getId();
+        User user = new User(1);
         user.setAmount(200);
         storage.add(user);
-        User otherUser = new User();
-        int toId = otherUser.getId();
+        User otherUser = new User(2);
         storage.add(otherUser);
-        Thread thread = new Thread(() -> storage.transfer(fromId, toId, 20));
-        Thread another = new Thread(() -> storage.transfer(fromId, toId, 20));
+        Thread thread = new Thread(() -> storage.transfer(1, 2, 20));
+        Thread another = new Thread(() -> storage.transfer(1, 2, 20));
         thread.start();
         another.start();
         thread.join();

@@ -8,11 +8,7 @@ import java.util.Map;
 @ThreadSafe
 public class ListStore implements Store {
     @GuardedBy("this")
-    private final Map<Integer, User> userList;
-
-    public ListStore() {
-        userList = new HashMap<>();
-    }
+    private final Map<Integer, User> userList = new HashMap<>();
 
     @Override
     public synchronized boolean add(User user) {
@@ -21,16 +17,12 @@ public class ListStore implements Store {
 
     @Override
     public synchronized boolean update(User user) {
-        if (!userList.containsKey(user.getId())) {
-            return false;
-        }
-        userList.put(user.getId(), user);
-        return true;
+        return userList.replace(user.getId(), user) != null;
     }
 
     @Override
     public synchronized boolean delete(User user) {
-        return userList.remove(user.getId()) != null;
+        return userList.remove(user.getId(), user);
     }
 
     @Override
