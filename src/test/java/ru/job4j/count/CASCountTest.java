@@ -49,4 +49,24 @@ public class CASCountTest {
         second.join();
         assertEquals(counter.get(), 6);
     }
+
+    @Test
+    public void when350() throws InterruptedException {
+        CASCount counter = new CASCount();
+        Thread first = new Thread(() -> {
+            for (int i = 0; i < 120; i++) {
+                counter.increment();
+            }
+        });
+        first.start();
+        Thread second = new Thread(() -> {
+            for (int i = 0; i < 230; i++) {
+                counter.increment();
+            }
+        });
+        second.start();
+        first.join();
+        second.join();
+        assertEquals(counter.get(), 350);
+    }
 }
