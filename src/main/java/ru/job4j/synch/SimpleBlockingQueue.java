@@ -33,13 +33,9 @@ public class SimpleBlockingQueue<T> {
         notifyAll();
     }
 
-    public synchronized T poll() {
+    public synchronized T poll() throws InterruptedException {
         while (queue.isEmpty()) {
-            try {
                 wait();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
         }
         T rsl = queue.poll();
         System.out.println("Объект удален");
