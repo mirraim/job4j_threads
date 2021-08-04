@@ -17,16 +17,12 @@ public class SimpleBlockingQueue<T> {
     }
 
     public SimpleBlockingQueue() {
-        this.limit = 2;
+        this.limit = Integer.MAX_VALUE;
     }
 
-    public synchronized void offer(T value) {
+    public synchronized void offer(T value) throws InterruptedException {
         while (queue.size() >= limit) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            wait();
         }
         queue.offer(value);
         System.out.println("Объект добавлен");
@@ -35,7 +31,7 @@ public class SimpleBlockingQueue<T> {
 
     public synchronized T poll() throws InterruptedException {
         while (queue.isEmpty()) {
-                wait();
+            wait();
         }
         T rsl = queue.poll();
         System.out.println("Объект удален");
@@ -45,5 +41,9 @@ public class SimpleBlockingQueue<T> {
 
     public synchronized boolean isEmpty() {
         return queue.isEmpty();
+    }
+
+    public synchronized int size() {
+        return queue.size();
     }
 }

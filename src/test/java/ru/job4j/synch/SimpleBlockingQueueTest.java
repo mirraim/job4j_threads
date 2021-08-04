@@ -14,7 +14,11 @@ public class SimpleBlockingQueueTest {
         SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>();
         Thread produser = new Thread(() -> {
             for (int i = 0; i < 10; i++) {
-                queue.offer(i);
+                try {
+                    queue.offer(i);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
         Thread consumer = new Thread(() -> {
@@ -38,7 +42,11 @@ public class SimpleBlockingQueueTest {
         SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>();
         Thread produser = new Thread(() -> {
             for (int i = 0; i < 10; i++) {
-                queue.offer(i);
+                try {
+                    queue.offer(i);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
         Thread consumer = new Thread(() -> {
@@ -63,7 +71,13 @@ public class SimpleBlockingQueueTest {
         final SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>();
         Thread producer = new Thread(
                 () -> IntStream.range(0, 5).forEach(
-                        queue::offer
+                        (i) -> {
+                            try {
+                                queue.offer(i);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
                 )
         );
         producer.start();
@@ -92,7 +106,13 @@ public class SimpleBlockingQueueTest {
         final SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>();
         Thread producer = new Thread(
                 () -> Arrays.stream(new int[]{3, 8, 16, 25}).forEach(
-                        queue::offer
+                        (i) -> {
+                            try {
+                                queue.offer(i);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
                 )
         );
         producer.start();
