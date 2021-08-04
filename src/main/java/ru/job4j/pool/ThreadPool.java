@@ -33,7 +33,11 @@ public class ThreadPool {
     }
 
     public void work(Runnable job) {
-        tasks.offer(job);
+        try {
+            tasks.offer(job);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void shutdown() {
@@ -47,5 +51,9 @@ public class ThreadPool {
                 }
             }
         }
+    }
+
+    public int jobSize() {
+        return tasks.size();
     }
 }

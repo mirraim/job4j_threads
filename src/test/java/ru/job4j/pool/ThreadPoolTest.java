@@ -28,6 +28,6 @@ public class ThreadPoolTest {
             pool.work(new Thread(count::incrementAndGet));
         }
         pool.shutdown();
-        assertEquals(count.get(), 364);
+        assertEquals(count.get(), 364 - pool.jobSize());
     }
 }
