@@ -2,4 +2,3 @@
 
 [![codecov](https://codecov.io/gh/mirraim/job4j_threads/branch/master/graph/badge.svg?token=U5HHUUNGRN)](https://codecov.io/gh/mirraim/job4j_threads)
 
-Это об изменении коммитов
