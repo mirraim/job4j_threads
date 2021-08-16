@@ -25,7 +25,6 @@ public class SimpleBlockingQueue<T> {
             wait();
         }
         queue.offer(value);
-        System.out.println("Объект добавлен");
         notifyAll();
     }
 
@@ -34,7 +33,6 @@ public class SimpleBlockingQueue<T> {
             wait();
         }
         T rsl = queue.poll();
-        System.out.println("Объект удален");
         notifyAll();
         return rsl;
     }

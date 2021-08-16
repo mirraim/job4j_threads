@@ -1,5 +1,8 @@
 package ru.job4j.ref;
 
+import net.jcip.annotations.NotThreadSafe;
+
+@NotThreadSafe
 public class ShareNotSafe {
     public static void main(String[] args) throws InterruptedException {
         UserCache cache = new UserCache();
